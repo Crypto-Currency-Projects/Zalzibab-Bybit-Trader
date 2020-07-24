@@ -1,7 +1,7 @@
 attrs==19.3.0
 bravado==10.4.1
 bravado-core==5.17.0
-bybit==0.2.2
+bybit==0.2.6
 certifi==2020.6.20
 cffi==1.14.0
 chardet==3.0.4
