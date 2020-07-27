@@ -252,11 +252,14 @@ No Open Position
         else:
             STOPPRICE = usd_str(STOPORDER['stop_px'])
         try:
-            CLOSEORDER = client.Order.Order_getOrders(order_status='New').result()[0]['result']['data'][0]
+            CLOSEORDER = client.Order.Order_getOrders(order_status='New').result()[0]['result']['data']
         except IndexError:
             CLOSEPRICE = 'No Close Set'
         else:
-            CLOSEPRICE = usd_str(CLOSEORDER['price'])
+            if SIDE == 'Buy':
+                CLOSEPRICE = usd_str(min(CLOSEORDER['price']))
+            else:
+                CLOSEPRICE = usd_str(max(CLOSEORDER['price']))
         WALLETDICT.update({'StopPrice': STOPPRICE,
                                'ClosePrice': CLOSEPRICE})
         msg = f'''Current Open Position
