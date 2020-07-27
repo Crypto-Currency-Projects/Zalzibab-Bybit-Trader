@@ -248,7 +248,7 @@ No Open Position
         try:
             STOPORDER = client.Conditional.Conditional_getOrders(stop_order_status='Untriggered').result()[0]['result']['data'][0]
         except IndexError:
-            STOPPRICE = 'No Stop Set'
+            STOPPRICE = usd_str(OPENPOSITION['liq_price'])+'***LIQUIDATION PRICE***'
         else:
             STOPPRICE = usd_str(STOPORDER['stop_px'])
         try:
