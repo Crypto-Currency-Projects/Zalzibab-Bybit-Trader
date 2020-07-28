@@ -251,9 +251,9 @@ No Open Position
             STOPPRICE = usd_str(OPENPOSITION['liq_price'])+'***LIQUIDATION PRICE***'
         else:
             if SIDE == 'Buy':
-                STOPPRICE = usd_str(max([x['stop_px'] for x in STOPORDER if x['stop_px'] < OPENPOSITION['entry_price'] and x['side'] != SIDE]))
+                STOPPRICE = usd_str(max([x['stop_px'] for x in STOPORDER if x['side'] != SIDE]))
             else:
-                STOPPRICE = usd_str(min([x['stop_px'] for x in STOPORDER if x['stop_px'] > OPENPOSITION['entry_price'] and x['side'] != SIDE]))
+                STOPPRICE = usd_str(min([x['stop_px'] for x in STOPORDER if x['side'] != SIDE]))
         
         CLOSEORDER = client.Order.Order_getOrders(order_status='New').result()[0]['result']['data']
         if len(CLOSEORDER) == 0:
