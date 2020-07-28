@@ -260,9 +260,9 @@ No Open Position
             CLOSEPRICE = 'No Close Set'
         else:
             if SIDE == 'Buy':
-                CLOSEPRICE = usd_str(min([x['price'] for x in CLOSEORDER if x['price'] > OPENPOSITION['entry_price'] and x['side'] != SIDE]))
+                CLOSEPRICE = usd_str(min([x['price'] for x in CLOSEORDER if x['side'] != SIDE]))
             else:
-                CLOSEPRICE = usd_str(max([x['price'] for x in CLOSEORDER if x['price'] < OPENPOSITION['entry_price'] and x['side'] != SIDE]))
+                CLOSEPRICE = usd_str(max([x['price'] for x in CLOSEORDER if x['side'] != SIDE]))
         
         WALLETDICT.update({'StopPrice': STOPPRICE,
                            'ClosePrice': CLOSEPRICE})
