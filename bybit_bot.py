@@ -245,23 +245,28 @@ No Open Position
         WALLETDICT.update({'Size': SIZE,
                            'Entry': ENTRY,
                            'Side': SIDE})
-        try:
-            STOPORDER = client.Conditional.Conditional_getOrders(stop_order_status='Untriggered').result()[0]['result']['data'][0]
-        except IndexError:
+        
+        STOPORDER = client.Conditional.Conditional_getOrders(stop_order_status='Untriggered').result()[0]['result']['data']
+        if len(STOPORDER) == 0:
             STOPPRICE = usd_str(OPENPOSITION['liq_price'])+'***LIQUIDATION PRICE***'
         else:
-            STOPPRICE = usd_str(STOPORDER['stop_px'])
-        try:
-            CLOSEORDER = client.Order.Order_getOrders(order_status='New').result()[0]['result']['data']
-        except IndexError:
+            if SIDE == 'Buy':
+                STOPPRICE = usd_str(max([x['stop_px'] for x in STOPORDER if x['stop_px'] < ENTRY]))
+            else:
+                STOPPRICE = usd_str(min([x['stop_px'] for x in STOPORDER if x['stop_px'] > ENTRY]))
+        
+        CLOSEORDER = client.Order.Order_getOrders(order_status='New').result()[0]['result']['data']
+        if len(CLOSEORDER) == 0:
             CLOSEPRICE = 'No Close Set'
         else:
             if SIDE == 'Buy':
-                CLOSEPRICE = usd_str(min([x['price'] for x in CLOSEORDER]))
+                CLOSEPRICE = usd_str(min([x['price'] for x in CLOSEORDER if x['price'] > ENTRY]))
             else:
-                CLOSEPRICE = usd_str(max([x['price'] for x in CLOSEORDER]))
+                CLOSEPRICE = usd_str(max([x['price'] for x in CLOSEORDER if x['price'] < ENTRY]))
+        
         WALLETDICT.update({'StopPrice': STOPPRICE,
-                               'ClosePrice': CLOSEPRICE})
+                           'ClosePrice': CLOSEPRICE})
+        
         msg = f'''Current Open Position
 {now}
 
