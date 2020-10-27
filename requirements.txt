@@ -5,7 +5,7 @@ bybit==0.2.6
 certifi==2020.6.20
 cffi==1.14.0
 chardet==3.0.4
-cryptography==3.0
+cryptography==3.2
 decorator==4.4.2
 future==0.18.2
 idna==2.10
